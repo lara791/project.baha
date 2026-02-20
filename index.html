@@ -1,285 +1,0 @@
-<!DOCTYPE html>
-<html lang="ar" dir="rtl">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>مشروع منطقة الباحة</title>
-    <style>
-        /* تنسيقات عامة */
-        * { box-sizing: border-box; }
-        body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            margin: 0; padding: 0; 
-            /* خلفية الصفحة الرئيسية */
-            background: linear-gradient(rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 0.3)), url('https://media-cdn.tripadvisor.com/media/photo-o/30/02/89/35/caption.jpg');
-            background-size: cover; background-attachment: fixed; background-position: center;
-            color: #444; height: 100vh;
-        }
-
-        /* تنسيق الهيدر */
-        header {
-            color: white; text-align: center; padding-top: 50px;
-            text-shadow: 2px 2px 5px rgba(0,0,0,0.8);
-        }
-        header h1 { font-size: 3.5rem; margin: 0; }
-        header p { font-size: 1.5rem; margin-top: 10px; opacity: 0.9; }
-
-        /* حاوية البطاقات */
-        .container {
-            max-width: 1000px; margin: 30px auto; 
-            background: rgba(255, 255, 255, 0.85);
-            border-radius: 15px; padding: 40px; 
-            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
-        }
-        h2 { color: #2c3e50; border-bottom: 2px solid #ddd; padding-bottom: 10px; }
-
-        /* شبكة البطاقات */
-        .grid {
-            display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-            gap: 20px; margin-top: 30px;
-        }
-
-        /* تصميم البطاقة */
-        .card {
-            position: relative; height: 250px; border-radius: 15px; overflow: hidden;
-            cursor: pointer; transition: transform 0.3s ease;
-            display: flex; align-items: center; justify-content: center; text-align: center; color: white;
-        }
-        .card::before {
-            content: ""; position: absolute; top: 0; left: 0; right: 0; bottom: 0;
-            background-size: cover; background-position: center;
-            transition: filter 0.3s; filter: brightness(0.6); z-index: 0;
-        }
-        .card:hover { transform: translateY(-5px); }
-        .card:hover::before { filter: brightness(0.4) blur(3px); }
-        
-        /* صور البطاقات */
-        #card-baha::before { background-image: url('https://media-cdn.tripadvisor.com/media/photo-o/30/02/89/35/caption.jpg'); }
-        #card-baljurashi::before { background-image: url('https://i.pinimg.com/736x/7a/9d/24/7a9d24f48c2bd1c1efbb74a8034054de.jpg'); }
-        #card-mandaq::before { background-image: url('https://i.pinimg.com/1200x/45/17/e9/4517e9db91f42071f2a2cc036ce4f0ad.jpg'); }
-
-        .card-content { position: relative; z-index: 1; pointer-events: none; }
-        .card h3 { font-size: 1.8rem; margin: 0; text-shadow: 0 2px 4px rgba(0,0,0,0.8); }
-
-        /* ========================================= */
-        /* تصميم النوافذ المنبثقة (MODAL) */
-        /* ========================================= */
-        
-        .modal {
-            display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            background-color: rgba(0, 0, 0, 0.7); z-index: 1000; 
-            justify-content: center; align-items: center;
-            backdrop-filter: blur(5px);
-        }
-
-        .modal-content {
-            background-color: white; width: 90%; max-width: 800px; max-height: 90vh;
-            overflow-y: auto; border-radius: 15px; padding: 0; position: relative;
-            box-shadow: 0 10px 40px rgba(0,0,0,0.5); animation: zoomIn 0.3s ease;
-        }
-
-        /* هيدر النافذة المنبثقة */
-        .modal-header {
-            height: 250px; background-size: cover; background-position: center;
-            position: relative; 
-            display: flex; 
-            flex-direction: column; /* ترتيب عمودي عشان النص يجي تحت العنوان */
-            justify-content: center; 
-            align-items: center;
-            color: white;
-            text-align: center;
-        }
-        .modal-header::after {
-            content: ""; position: absolute; top: 0; left: 0; width: 100%; height: 100%;
-            background: linear-gradient(to top, rgba(0,0,0,0.8), transparent);
-        }
-        
-        /* تنسيق العنوان الكبير */
-        .modal-header h2 {
-            position: relative; z-index: 2; margin: 0; color: white; font-size: 3rem; border: none;
-            text-shadow: 2px 2px 10px #000000cc;
-        }
-
-        /* 🔴 تنسيق النص الفرعي الجديد (تحت العنوان) */
-        .modal-subtitle {
-            position: relative; z-index: 2;
-            margin: 5px 0 0 0;
-            font-size: 1.2rem;
-            color: #ffffff; /* لون ذهبي */
-            text-shadow: 2px 2px 10px #000000cc;
-            font-weight: bold;
-            text-shadow: 1px 1px 2px black;
-        }
-
-        /* زر الإغلاق */
-        .close-btn {
-            position: absolute; top: 15px; left: 15px;
-            background: rgba(0,0,0,0.5); color: white;
-            width: 40px; height: 40px; border-radius: 50%;
-            text-align: center; line-height: 40px; font-size: 24px;
-            cursor: pointer; z-index: 10; transition: 0.3s;
-        }
-        .close-btn:hover { background: red; }
-
-        /* محتوى النافذة */
-        .modal-body { padding: 30px; }
-        .modal-body p { line-height: 1.8; color: #555; font-size: 1.1rem; }
-
-        /* عناوين داخل النافذة */
-        .modal-body h3 {
-            color: #2980b9; 
-            border-right: 5px solid #2980b9;
-            padding-right: 10px;
-            margin-top: 20px;
-        }
-
-        /* معرض الصور داخل النافذة */
-        .gallery { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 15px; margin-top: 20px; }
-        .gallery img { width: 100%; height: 300px; object-fit: cover; border-radius: 15px; }
-        .gallery p { text-align: center; font-size: 0.9rem; margin-top: 5px; font-weight: bold; }
-
-        @keyframes zoomIn {
-            from { transform: scale(0.8); opacity: 0; }
-            to { transform: scale(1); opacity: 1; }
-        }
-
-        footer { text-align: center; padding: 20px; color: white; margin-top: 20px; font-size: 0.9rem; text-shadow: 1px 1px 2px black; }
-        /* تنسيق اسم الطالبة في أسفل الصفحة */
-        .student-footer {
-          text-align: center;      /* توسيط النص */
-          margin-top: 30px;        /* مسافة من الأعلى */
-          padding-top: 15px;       /* مسافة داخلية */
-          border-top: 1px solid #ddd; /* خط فاصل خفيف */
-          font-weight: bold;       /* تعريض الخط */
-          color: #2c3e50;          /* لون الخط */
-          font-size: 1rem;
-        }
-    </style>
-</head>
-<body>
-
-    <header>
-        <h1>مشروع منطقة الباحة</h1>
-        <p>تراث، طبيعة، ومستقبل مشرق</p>
-    </header>
-
-    <div class="container">
-        <h2>محافظات المنطقة</h2>
-        <p>اضغط على أي بطاقة لاستعراض التفاصيل :</p>
-        
-        <div class="grid">
-            <div class="card" id="card-baha" onclick="openModal('modal-baha')">
-                <div class="card-content">
-                    <h3>مدينة الباحة</h3>
-                </div>
-            </div>
-
-            <div class="card" id="card-baljurashi" onclick="openModal('modal-baljurashi')">
-                <div class="card-content">
-                    <h3>محافظة بلجرشي</h3>
-                </div>
-            </div>
-
-            <div class="card" id="card-mandaq" onclick="openModal('modal-mandaq')">
-                <div class="card-content">
-                    <h3>محافظة المندق</h3>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <footer>
-        <p>إعداد الطالبات: ريما الغامدي | ريماس الزهراني | جمانه الزبيدي | لارا المطيري | ميرال عبدالله</p>
-    </footer>
-
-    <div id="modal-baha" class="modal">
-        <div class="modal-content">
-            <div class="close-btn" onclick="closeModal('modal-baha')">&times;</div>
-            <div class="modal-header" style="background-image: url('https://media-cdn.tripadvisor.com/media/photo-o/30/02/89/35/caption.jpg');">
-                <h2>منطقة الباحة</h2>
-                <p class="modal-subtitle">لؤلؤة الجنوب وعاصمة المنطقة</p>
-            </div>
-            <div class="modal-body">
-                <h3>نبذة عامة</h3>
-                <p>منطقة الباحة هي إحدى المناطق الإدارية بالمملكة، وتعد المركز الرئيسي للدوائر الحكومية والأسواق التجارية الكبرى. تقع المنطقة على سلسلة جبال السروات وترتفع عن سطح البحر بحوالي 2500 متر. تشتهر بغابة رغدان وقرية ذي عين الأثرية.</p>
-                <h3>أبرز المعالم السياحية</h3>
-                 <p>
-                  تشتهر المدينة بوجود <strong>غابة رغدان</strong>، وهي أكبر غابة في المنطقة وتتميز بأشجار العرعر الكثيفة والممرات الحجرية الجميلة. كما تضم المدينة قرية <strong>ذي عين الأثرية</strong> التي تقع في تهامة الباحة وتعتبر أعجوبة معمارية بتاريخ يمتد لمئات السنين، بالإضافة إلى متحف الباحة الإقليمي الذي يروي تاريخ المنطقة العريق.
-                 </p>
-                <h3>معرض الصور</h3>
-                <div class="gallery">
-                    <div><img src="public-site.jpg"><p>إطلالة المنطقة</p></div>
-                    <div><img src="raghadan.jpg"><p>غابة رغدان</p></div>
-                    <div><img src="the-eye.jpg"><p>قرية ذي عين</p></div>
-                </div>
-            
-                    <div class="student-footer">
-                         1
-</div>
-            </div>
-        </div>
-    </div>
-
-    <div id="modal-baljurashi" class="modal">
-        <div class="modal-content">
-            <div class="close-btn" onclick="closeModal('modal-baljurashi')">&times;</div>
-            <div class="modal-header" style="background-image: url('https://i.pinimg.com/736x/7a/9d/24/7a9d24f48c2bd1c1efbb74a8034054de.jpg');">
-                <h2>محافظة بلجرشي</h2>
-                <p class="modal-subtitle">التاريخ والطبيعة</p>
-            </div>
-            <div class="modal-body">
-                <h3>عن المحافظة</h3>
-                <p>تعتبر بلجرشي المركز التجاري والاقتصادي للمنطقة قديماً. تتميز بمناخها العليل وطبيعتها الساحرة وسوق السبت التاريخي. كما تضم منتزه الباحة الوطني ومنتزه الشكران.</p>
-                <h3>أبرز المعالم</h3>
-               <ul>
-                  <li><strong>سوق السبت:</strong> سوق شعبي تاريخي يقام كل صباح سبت.</li>
-                  <li><strong>منتزه الباحة الوطني:</strong> يقع في بلجرشي ويتميز بمساحاته الواسعة.</li>
-                  <li><strong>منتزه الأمير حسام:</strong> يتميز بالنوافير والبحيرات الصناعية.</li>
-              </ul>
-                <h3>معرض الصور</h3>
-                <div class="gallery">
-                    <div><img src="https://i.pinimg.com/736x/10/f5/78/10f578af89f91df4abca04ac858185cf.jpg"><p>سوق السبت</p></div>
-                    <div><img src="https://imgs.search.brave.com/LCSxERDGewyMvRk7jKcDTqVD4oF73szSteSLawtCajU/rs:fit:500:0:1:0/g:ce/aHR0cHM6Ly9jZG4u/YWxhcmFiYWx5YXdt/Lm5ldC93cC1jb250/ZW50L3VwbG9hZHMv/MjAyNC8wNC8lRDkl/ODUlRDklODYlRDgl/QUElRDglQjIlRDkl/ODctJUQ4JUE3JUQ5/JTg0JUQ4JUI0JUQ5/JTgzJUQ4JUIxJUQ4/JUE3JUQ5JTg2Lmpw/Zw"><p>منتزه الشكران</p></div>       
-            </div>
-        <div class="student-footer">
-2                        </div>
-                </div>
-        </div>
-    </div>
-
-    <div id="modal-mandaq" class="modal">
-        <div class="modal-content">
-            <div class="close-btn" onclick="closeModal('modal-mandaq')">&times;</div>
-            <div class="modal-header" style="background-image: url('https://i.pinimg.com/1200x/45/17/e9/4517e9db91f42071f2a2cc036ce4f0ad.jpg');">
-                <h2>محافظة المندق</h2>
-                <p class="modal-subtitle">مدينة الضباب</p>
-            </div>
-            <div class="modal-body">
-                <h3>عن المحافظة</h3>
-                <p>تلقب بمدينة الضباب وتقع على قمم جبال السروات المطلة على تهامة. نالت لقب "المدينة الصحية" لبيئتها النظيفة. تشتهر بمنتزه الخلب وحديقة الفراشة.</p>
-                <h3>أبرز المعالم</h3>
-              <ul>
-                  <li><strong>منتزه الخلب:</strong> يوفر إطلالات بانورامية رائعة.</li>
-                  <li><strong>حديقة الفراشة:</strong> حديقة مميزة بتصميمها ومرافقها.</li>
-                  <li><strong>السدود والمزارع:</strong> تشتهر المندق بوفرة المزارع والمدرجات الخضراء.</li>
-              </ul>
-                <h3>معرض الصور</h3>
-                <div class="gallery">
-                    <div><img src="https://imgs.search.brave.com/YlWbrG_5qnz0nYj-N1BL77sAqz-SvoSX3SInOuWA0WQ/rs:fit:500:0:1:0/g:ce/aHR0cHM6Ly93d3cu/c2FhaWguY29tL2Zp/bGVzL3N0eWxlcy9n/YWxsZXJ5L3B1Ymxp/Yy9nYWxsZXJ5LyVE/OCVBNyVEOSU4NCVE/OCVBOCVEOCVBNyVE/OCVBRCVEOCVBOS8y/OTEwMDQxNDAxMjYz/NDYxLmpwZw"><p>منتزه الخلب</p></div>
-                    <div><img src="https://imgs.search.brave.com/n9EGur_0XIKNyrTf3EdykjL1kC74DzqNwmgCnZe3IS8/rs:fit:500:0:1:0/g:ce/aHR0cHM6Ly93d3cu/YWxlcXQuY29tL3Np/dGVzL2RlZmF1bHQv/ZmlsZXMvc3R5bGVz/L3NjYWxlXzgzMC9w/dWJsaWMvcmJpdGVt/LzIwMTkvMDQvNi8x/MDQwNzQ2LTE4NzUw/MjIyODMuanBnP2l0/b2s9dTlWeWg5WEk"><p>مدرجات زراعية</p></div>
-                </div>
-            
-                    <div class="student-footer">
-3</div>
-            </div>
-        </div>
-    </div>
-
-    <script>
-        function openModal(modalId) { document.getElementById(modalId).style.display = "flex"; }
-        function closeModal(modalId) { document.getElementById(modalId).style.display = "none"; }
-        window.onclick = function(event) { if (event.target.classList.contains('modal')) { event.target.style.display = "none"; } }
-    </script>
-
-</body>
-</html>

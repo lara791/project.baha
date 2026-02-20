@@ -1,0 +1,320 @@
+@import url('https://fonts.googleapis.com/css2?family=Tajawal:wght@400;700;800&display=swap');
+
+html {
+    /* تفعيل النزول السلس عند الضغط على الروابط */
+    scroll-behavior: smooth;
+    /* مسافة عشان شريط التنقل ما يغطي على العناوين */
+    scroll-padding-top: 100px;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Tajawal', sans-serif;
+}
+
+body {
+    background: url('https://images.unsplash.com/photo-1621215111956-6216447c2138?q=80&w=2070&auto=format&fit=crop') no-repeat center center fixed;
+    background-size: cover;
+    color: #fff;
+}
+
+.background-wrap {
+    position: fixed;
+    top: 0; 
+    left: 0; 
+    width: 100%; 
+    height: 100%;
+    background: linear-gradient(135deg, rgba(4, 25, 14, 0.85), rgba(15, 60, 35, 0.7));
+    z-index: -1;
+}
+
+/* شريط التنقل الجديد */
+.fixed-nav {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    z-index: 1000;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: rgba(10, 30, 20, 0.6);
+    backdrop-filter: blur(15px);
+    -webkit-backdrop-filter: blur(15px);
+    padding: 15px 50px;
+    border-bottom: 1px solid rgba(226, 199, 117, 0.3);
+}
+
+.nav-brand {
+    font-size: 1.8rem;
+    font-weight: 800;
+    color: #e2c775;
+}
+
+.nav-links {
+    list-style: none;
+    display: flex;
+    gap: 30px;
+}
+
+.nav-links a {
+    color: #fff;
+    text-decoration: none;
+    font-size: 1.2rem;
+    font-weight: bold;
+    transition: color 0.3s;
+}
+
+.nav-links a:hover {
+    color: #e2c775;
+}
+
+/* شاشة البداية الكاملة */
+.full-screen-hero {
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    position: relative;
+}
+
+.hero-content h1 {
+    font-size: 5.5rem;
+    color: #e2c775;
+    text-shadow: 0 4px 20px rgba(0,0,0,0.8);
+    margin-bottom: 15px;
+    animation: fadeInDown 1.5s ease;
+}
+
+.hero-content p {
+    font-size: 1.8rem;
+    color: #e0e0e0;
+    animation: fadeInUp 1.5s ease;
+}
+
+/* سهم النزول */
+.scroll-down {
+    position: absolute;
+    bottom: 40px;
+    font-size: 2.5rem;
+    color: #e2c775;
+    text-decoration: none;
+    animation: bounce 2s infinite;
+}
+
+/* الحركات (أنيميشن) */
+@keyframes fadeInDown {
+    from { opacity: 0; transform: translateY(-30px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes fadeInUp {
+    from { opacity: 0; transform: translateY(30px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes bounce {
+    0%, 20%, 50%, 80%, 100% { transform: translateY(0); }
+    40% { transform: translateY(-20px); }
+    60% { transform: translateY(-10px); }
+}
+
+.glass-container {
+    max-width: 1100px;
+    margin: 0 auto 50px;
+    padding: 0 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 30px;
+}
+
+.glass-card {
+    background: rgba(10, 30, 20, 0.5);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border: 1px solid rgba(226, 199, 117, 0.2);
+    border-radius: 20px;
+    padding: 35px;
+    box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.4);
+    transition: transform 0.4s ease, border-color 0.4s;
+}
+
+.glass-card:hover {
+    transform: translateY(-5px);
+    border-color: rgba(226, 199, 117, 0.6);
+}
+
+.glass-card h3 {
+    color: #e2c775;
+    font-size: 2rem;
+    margin-bottom: 20px;
+    border-bottom: 2px dashed rgba(226, 199, 117, 0.3);
+    padding-bottom: 10px;
+    display: inline-block;
+}
+
+.glass-card p {
+    font-size: 1.2rem;
+    line-height: 1.9;
+}
+
+.two-columns {
+    display: grid;
+    grid-template-columns: 1.2fr 0.8fr;
+    gap: 30px;
+}
+
+.weather-box {
+    text-align: center;
+    background: linear-gradient(135deg, rgba(226, 199, 117, 0.1), rgba(10, 30, 20, 0.4));
+}
+
+.weather-icon {
+    font-size: 5.5rem;
+    animation: float 3s ease-in-out infinite;
+}
+
+@keyframes float {
+    0% { transform: translateY(0px); }
+    50% { transform: translateY(-15px); }
+    100% { transform: translateY(0px); }
+}
+
+.cities-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 25px;
+    margin-top: 20px;
+}
+
+.city-card {
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: 15px;
+    overflow: hidden;
+    border: 1px solid rgba(226, 199, 117, 0.2);
+    transition: all 0.4s ease;
+    text-align: center;
+}
+
+.city-card:hover {
+    transform: translateY(-10px);
+    border-color: #e2c775;
+    box-shadow: 0 10px 20px rgba(0,0,0,0.4);
+    background: rgba(226, 199, 117, 0.1);
+}
+
+.city-img-wrapper {
+    position: relative;
+    width: 100%;
+    height: 180px;
+    overflow: hidden;
+}
+
+.city-img-wrapper img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.5s ease;
+}
+
+.city-card:hover .city-img-wrapper img {
+    transform: scale(1.1);
+}
+
+.city-number {
+    position: absolute;
+    top: 15px;
+    right: 15px;
+    background: #e2c775;
+    color: #0b261a;
+    width: 35px;
+    height: 35px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 50%;
+    font-size: 1.2rem;
+    font-weight: bold;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.5);
+}
+
+.city-title {
+    padding: 15px;
+    font-size: 1.6rem;
+    color: #fff;
+    font-weight: bold;
+}
+
+/* تنسيقات قسم التعليقات الجديد */
+.comments-section {
+    text-align: center;
+}
+
+.comment-form {
+    max-width: 600px;
+    margin: 0 auto;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.form-group input, 
+.form-group textarea {
+    width: 100%;
+    padding: 15px;
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(226, 199, 117, 0.3);
+    border-radius: 10px;
+    color: #fff;
+    font-size: 1.2rem;
+    outline: none;
+    transition: border-color 0.3s, background 0.3s;
+}
+
+.form-group input::placeholder, 
+.form-group textarea::placeholder {
+    color: #aaa;
+}
+
+.form-group input:focus, 
+.form-group textarea:focus {
+    border-color: #e2c775;
+    background: rgba(255, 255, 255, 0.1);
+}
+
+.submit-btn {
+    background: #e2c775;
+    color: #0b261a;
+    border: none;
+    padding: 15px 30px;
+    font-size: 1.3rem;
+    font-weight: bold;
+    border-radius: 10px;
+    cursor: pointer;
+    transition: background 0.3s, transform 0.2s;
+    align-self: center;
+}
+
+.submit-btn:hover {
+    background: #f3d886;
+    transform: scale(1.05);
+}
+
+/* استجابة الشاشات الصغيرة */
+@media (max-width: 768px) {
+    .fixed-nav {
+        flex-direction: column;
+        padding: 15px;
+        gap: 15px;
+    }
+    .hero-content h1 {
+        font-size: 3.5rem;
+    }
+    .two-columns {
+        grid-template-columns: 1fr;
+    }
+}
